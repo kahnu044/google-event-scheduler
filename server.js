@@ -1,21 +1,10 @@
 const express = require("express");
-const { google } = require('googleapis');
 const dotenv = require("dotenv");
 dotenv.config();
+const {oauth2Client, scopes} = require('./service/googleService');
+
 const PORT = process.env.PORT || 8000;
 const app = express();
-
-// Define the scope of access for the Google Calendar API.
-const scopes = ['https://www.googleapis.com/auth/calendar'];
-
-// OAuth 2 configuration
-const oauth2Client = new google.auth.OAuth2
-    (
-        process.env.CLIENT_ID,
-        process.env.CLIENT_SECRET,
-        process.env.REDIRECT_URL
-    );
-
 
 // Routes
 app.get("/", (req, res) => {
