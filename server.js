@@ -1,8 +1,11 @@
 const express = require("express");
+const dotenv = require("dotenv");
+dotenv.config();
+const PORT = process.env.PORT || 8000;
+
 const app = express();
 
-const PORT = 8000;
-
+// Routes
 app.get("/", (req, res) => {
     res.json({
         status: true,
