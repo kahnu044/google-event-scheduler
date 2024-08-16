@@ -52,13 +52,14 @@ app.get('/create-event', async (req, res) => {
         return res.status(200).json({
             success: eventResponse.success,
             message: 'Event created',
-            data: eventResponse.result
+            data: eventResponse?.result,
+            link: eventResponse?.result?.data?.hangoutLink
         });
     } catch (error) {
 
-        console.log(err);
+        console.log(error);
         return res.status(500).json({
-            success: result.success,
+            success: false,
             message: 'Event creation failed',
             error: error?.message || "Internal Server Error",
             data: ''

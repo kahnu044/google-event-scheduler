@@ -1,5 +1,6 @@
 // googleService.js
 const { google } = require('googleapis');
+const { v4: uuidv4 } = require('uuid');
 
 // Define the scope of access for the Google Calendar API.
 const scopes = ['https://www.googleapis.com/auth/calendar'];
@@ -30,13 +31,25 @@ const createEvent = async () => {
             dateTime: "2024-08-16T12:30:00+05:30",
             timeZone: 'Asia/Kolkata'
         },
+        colorId: 1,
+        conferenceData: {
+            createRequest: {
+                requestId: uuidv4(),
+            }
+        },
+
+        attendees: [
+            { email: 'youremail@gmail.com' },
+        ]
     };
 
     try {
         const result = await calendar.events.insert({
             calendarId: 'primary',
             auth: oauth2Client,
-            resource: event
+            resource: event,
+            conferenceDataVersion: 1,
+            sendUpdates: 'all',
         });
 
         return {
