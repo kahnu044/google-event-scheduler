@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
-const {oauth2Client, scopes} = require('./service/googleService');
+const { oauth2Client, scopes, createEvent } = require('./service/googleService');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -35,6 +35,35 @@ app.get("/auth/redirect", async (req, res) => {
     // }
     oauth2Client.setCredentials(tokens);
     res.send('Authentication successful! Please return to the console.');
+});
+
+app.get('/create-event', async (req, res) => {
+
+    try {
+        const eventResponse = await createEvent();
+        if (!eventResponse.success) {
+            return res.status(400).json({
+                success: eventResponse.success,
+                message: 'Event creation failed',
+                data: ''
+            })
+        }
+
+        return res.status(200).json({
+            success: eventResponse.success,
+            message: 'Event created',
+            data: eventResponse.result
+        });
+    } catch (error) {
+
+        console.log(err);
+        return res.status(500).json({
+            success: result.success,
+            message: 'Event creation failed',
+            error: error?.message || "Internal Server Error",
+            data: ''
+        })
+    }
 });
 
 app.listen(PORT, () => {
